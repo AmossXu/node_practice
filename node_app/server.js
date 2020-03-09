@@ -3,10 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const users = require('./routers/api/users');
+const profile = require('./routers/api/profile');
 
 const app = express();
 
-
+mongoose.set('useFindAndModify', false)
 //DB config
 const db = require('./config/key').mongoURL;
 //db connection
@@ -31,11 +32,12 @@ app.use(bodyParser.json());
 
 //routers中间件
 app.use('/api/users', users);
+app.use('/api/profile', profile);
 
 //passport初始化
 app.use(passport.initialize());
 
-require('./config/passport')
+require('./config/passport')(passport);
 
 const port = process.env.PORT || 5000;
 

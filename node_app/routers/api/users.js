@@ -10,14 +10,6 @@ const passport = require('passport')
 
 const keys = require('../../config/key')
 const User = require('../../models/User')
-// $route  GET api/users/test
-// @desc   返回的请求的json数据
-// @access public
-router.get('/test', (req, res) => {
-    res.json({
-        msg: "test"
-    })
-})
 
 // $route  POST api/users/register
 // @desc   返回的请求的json数据
@@ -30,9 +22,7 @@ router.post('/register', (req, res) => {
         email: req.body.email
     }).then(user => {
         if (user) {
-            return res.status(400).json({
-                email: '邮箱已经被注册'
-            })
+            return res.status(400).json('邮箱已经被注册')
         } else {
             const avatar = gravatar.url(req.body.email, {
                 s: '200',
@@ -44,7 +34,8 @@ router.post('/register', (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 avatar,
-                password: req.body.password
+                password: req.body.password,
+                identity: req.body.identity
             })
 
             bcrypt.genSalt(10, function (err, salt) {
@@ -73,9 +64,7 @@ router.post(('/login'), (req, res) => {
         })
         .then(user => {
             if (!user) {
-                return res.status(404).json({
-                    email: "用户不存在"
-                });
+                return res.status(404).json("用户不存在");
             }
             //密码匹配 之前用的genSalt加密 现在使用compare匹配密码
             // Load hash from your password DB.
@@ -86,7 +75,9 @@ router.post(('/login'), (req, res) => {
 
                         const rule = {
                             id: user.id,
-                            name: user.name
+                            name: user.name,
+                            avatar: user.avatar,
+                            identity: user.identity
                         };
                         jwt.sign(rule, keys.secreteOrKey, {
                             expiresIn: 3600
@@ -101,9 +92,7 @@ router.post(('/login'), (req, res) => {
                         //     msg: "success"
                         // });
                     } else {
-                        return res.status(400).json({
-                            password: "密码错误"
-                        });
+                        return res.status(400).json("密码错误");
                     }
                 })
         }).catch(err => console.log(err));
@@ -116,7 +105,10 @@ router.get('/current', passport.authenticate("jwt", {
     session: false
 }), (req, res) => {
     res.json({
-        msg: 'success'
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        identity: req.user.identity
     })
 })
 
