@@ -111,7 +111,7 @@
                                 })
                             })
 
-                        this.$router.push('./login.vue')
+                        this.$router.push('./login')
                     }
                 });
             }
