@@ -5,7 +5,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login'
 import Home from '../views/Home'
 import InfoShow from '../views/InfoShow'
-
+import FundList from '../views/FundList'
 import Error from '../views/Error'
 Vue.use(VueRouter)
 
@@ -28,6 +28,10 @@ const routes = [{
       path: '/infoShow',
       name: 'infoShow',
       component: InfoShow
+    }, {
+      path: '/fundList',
+      name: 'fundList',
+      component: FundList
     }]
   }, {
     path: '/register',

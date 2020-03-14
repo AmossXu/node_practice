@@ -2,7 +2,10 @@
     <div class="index">
         <Head_nav></Head_nav>
         <LeftMenu></LeftMenu>
-        <router-view></router-view>
+        <div class="rightContainer">
+            <router-view></router-view>
+
+        </div>
     </div>
 </template>
 <script>
@@ -24,3 +27,18 @@
         }
     };
 </script>
+
+<style>
+    .index {
+        overflow: hidden;
+    }
+
+    .rightContainer {
+        padding: relative;
+        top: 0;
+        left: 180px;
+        width: calc(100%-200px);
+        height: calc(100%-70px);
+        overflow: auto;
+    }
+</style>
